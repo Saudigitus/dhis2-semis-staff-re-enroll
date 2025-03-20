@@ -3,7 +3,8 @@ import { useDataStoreKey, useProgramsKeys } from "dhis2-semis-components"
 import { useGetEvents, useShowAlerts, useUploadEvents, useUrlParams } from "dhis2-semis-functions"
 import { TableDataRefetch } from "dhis2-semis-types"
 import { useState } from "react"
-import { useSetRecoilState } from "recoil"
+import { useRecoilState, useSetRecoilState } from "recoil"
+import { ReenrollSummaryState } from "../../schemas/summarySchema"
 
 const useReenrollStaff = () => {
     const { getEvents } = useGetEvents()
@@ -16,6 +17,8 @@ const useReenrollStaff = () => {
     const setRefetch = useSetRecoilState(TableDataRefetch);
     const programData = programsValues[1];
     const { show } = useShowAlerts()
+    const [openSummary, SetOpenSummary] = useRecoilState(ReenrollSummaryState);
+
 
     const reenrollStaff = async ({ staffs, clearSelectedStaffs, formValues, closeModal }:
         { staffs: any[], formValues: any, clearSelectedStaffs: () => void, closeModal: () => void }) => {
@@ -101,12 +104,15 @@ const useReenrollStaff = () => {
                         type: { success: true }
                     })
                     setRefetch(prevValue => (!prevValue))
-                    setLoadingReenroll(false)
-                    closeModal()
                 })
             }
-
         }
+        setLoadingReenroll(false)
+        closeModal()
+        SetOpenSummary({
+            created: staffsAbleToSave.length,
+            conflicts: staffsUnableToSave.length
+        })
     }
     return { reenrollStaff, loadingReenroll }
 

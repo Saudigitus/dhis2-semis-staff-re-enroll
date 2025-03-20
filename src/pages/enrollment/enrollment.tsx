@@ -10,6 +10,8 @@ import EnrollmentActionsButtons from "../../components/enrollmentButtons/Enrollm
 import { useGetSectionTypeLabel, useHeader, useTableData, useUrlParams, useViewPortWidth } from "dhis2-semis-functions";
 import ModalManagerEnrollmentDelete from '../../components/modal/deleteEnrollment/ModalManager';
 import { RowSelectionState } from '../../schemas/selectedStaffsSchema';
+import SummaryModalContent from '../../components/modal/SummaryModalContent';
+import { ReenrollSummaryState } from '../../schemas/summarySchema';
 
 export default function EnrollmentsPage() {
     const { sectionName } = useGetSectionTypeLabel();
@@ -26,6 +28,7 @@ export default function EnrollmentsPage() {
     const { columns } = useHeader({ dataStoreData, programConfigData: programData as unknown as ProgramConfig, tableColumns: [], module: Modules.Enrollment });
     const [filterState, setFilterState] = useState<{ dataElements: any, attributes: any }>({ attributes: [], dataElements: [] });
     const [refetch,] = useRecoilState(TableDataRefetch);
+    const [openSummary, SetOpenSummary] = useRecoilState(ReenrollSummaryState);
 
     const handleOpenModal = (e: Record<string, any>, type: "edit" | "delete",) => {
         add("trackedEntity", e?.row?.trackedEntity);
@@ -37,6 +40,8 @@ export default function EnrollmentsPage() {
             setOpenEditModal(true)
         }
     };
+
+    console.log(openSummary,"openSummary")
 
     useEffect(() => {
         if (!openDeleteModal && !openEditModal) {
@@ -103,6 +108,7 @@ export default function EnrollmentsPage() {
                             setFilterState={setFilterState}
                         />
                         {openEditModal && <ModalManager open={openEditModal} setOpen={setOpenEditModal} saveMode="UPDATE" />}
+                        {(openSummary.created!=null && openSummary.conflicts!=null) && <SummaryModalContent handleCloseModal={() => SetOpenSummary({ created: null, conflicts: null })} created={openSummary.created} conflicts={openSummary.conflicts} open={openSummary.created != null && openSummary.conflicts != null} />}
                         {openDeleteModal && <ModalManagerEnrollmentDelete open={openDeleteModal} setOpen={setOpenDeleteModal} saveMode="UPDATE" />}
                     </>
             }
