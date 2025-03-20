@@ -111,7 +111,8 @@ const useReenrollStaff = () => {
         closeModal()
         SetOpenSummary({
             created: staffsAbleToSave.length,
-            conflicts: staffsUnableToSave.length
+            conflicts: staffsUnableToSave.length,
+            conflictDetails: staffsUnableToSave
         })
     }
     return { reenrollStaff, loadingReenroll }

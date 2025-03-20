@@ -41,8 +41,6 @@ export default function EnrollmentsPage() {
         }
     };
 
-    console.log(openSummary,"openSummary")
-
     useEffect(() => {
         if (!openDeleteModal && !openEditModal) {
             remove("trackedEntity")
@@ -70,7 +68,6 @@ export default function EnrollmentsPage() {
 
         setFilterState({ ...filterState, dataElements: filters.join(",") })
     }, [academicYear, grade, section])
-
 
     return (
         <div style={{ height: "85vh" }}>
@@ -108,7 +105,7 @@ export default function EnrollmentsPage() {
                             setFilterState={setFilterState}
                         />
                         {openEditModal && <ModalManager open={openEditModal} setOpen={setOpenEditModal} saveMode="UPDATE" />}
-                        {(openSummary.created!=null && openSummary.conflicts!=null) && <SummaryModalContent handleCloseModal={() => SetOpenSummary({ created: null, conflicts: null })} created={openSummary.created} conflicts={openSummary.conflicts} open={openSummary.created != null && openSummary.conflicts != null} />}
+                        {(openSummary.created != null && openSummary.conflicts != null) && <SummaryModalContent conflictDetails={openSummary.conflictDetails} handleCloseModal={() => SetOpenSummary({ created: null, conflicts: null, conflictDetails: null })} created={openSummary.created} conflicts={openSummary.conflicts} open={openSummary.created != null && openSummary.conflicts != null} />}
                         {openDeleteModal && <ModalManagerEnrollmentDelete open={openDeleteModal} setOpen={setOpenDeleteModal} saveMode="UPDATE" />}
                     </>
             }
