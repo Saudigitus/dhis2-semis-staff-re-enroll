@@ -89,7 +89,7 @@ export default function EnrollmentsPage() {
                     <>
                         <Table
                             programConfig={programData}
-                            title="Enrollments"
+                            title="Staff Re-enroll"
                             viewPortWidth={viewPortWidth}
                             columns={columns}
                             totalElements={4}
