@@ -96,17 +96,18 @@ const useReenrollStaff = () => {
                         trackedEntityType: dataStoreData.trackedEntityType,
                         trackedEntity: staff.trackedEntity
                     })
-
-                await uploadValues({ trackedEntities: enrollments }, 'COMMIT', 'CREATE_AND_UPDATE').then((resp) => {
-                    clearSelectedStaffs()
-                    show({
-                        message: "Promotion completed successfully",
-                        type: { success: true }
-                    })
-                    setRefetch(prevValue => (!prevValue))
-                })
             }
         }
+
+        await uploadValues({ trackedEntities: enrollments }, 'COMMIT', 'CREATE_AND_UPDATE').then((resp) => {
+            clearSelectedStaffs()
+            show({
+                message: "Promotion completed successfully",
+                type: { success: true }
+            })
+            setRefetch(prevValue => (!prevValue))
+        })
+
         setLoadingReenroll(false)
         closeModal()
         SetOpenSummary({
