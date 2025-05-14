@@ -5,10 +5,8 @@ import { AppWrapper } from 'dhis2-semis-components'
 
 const MyApp = () => {
 
-    console.log(process.env.NODE_ENV)
-
     return (
-        <AppWrapper dataStoreKey='semis/values'>
+        <AppWrapper dataStoreKey='dataStore/semis/values'>
             <Router />
         </AppWrapper>
     )

@@ -13,7 +13,7 @@ import { RowSelectionState } from '../../schemas/selectedStaffsSchema';
 import SummaryModalContent from '../../components/modal/SummaryModalContent';
 import { ReenrollSummaryState } from '../../schemas/summarySchema';
 
-export default function EnrollmentsPage() {
+export default function Reenrollment() {
     const { sectionName } = useGetSectionTypeLabel();
     const dataStoreData = useDataStoreKey({ sectionType: "staff" });
     const programsValues = useProgramsKeys();
@@ -21,7 +21,7 @@ export default function EnrollmentsPage() {
     const [selected, setSelected] = useRecoilState(RowSelectionState)
     const { viewPortWidth } = useViewPortWidth()
     const { urlParameters, add, remove } = useUrlParams()
-    const { academicYear, grade, class: section, school, schoolName } = urlParameters()
+    const { academicYear, grade, class: section, school, schoolName, sectionType } = urlParameters()
     const [openEditModal, setOpenEditModal] = useState<boolean>(false)
     const [openDeleteModal, setOpenDeleteModal] = useState<boolean>(false)
     const { getData, tableData, loading } = useTableData({ module: Modules.Enrollment, selectedDataStore: dataStoreData });
@@ -29,6 +29,7 @@ export default function EnrollmentsPage() {
     const [filterState, setFilterState] = useState<{ dataElements: any, attributes: any }>({ attributes: [], dataElements: [] });
     const [refetch,] = useRecoilState(TableDataRefetch);
     const [openSummary, SetOpenSummary] = useRecoilState(ReenrollSummaryState);
+    const [pagination, setPagination] = useState({ page: 1, pageSize: 10, totalPages: 10 })
 
     const handleOpenModal = (e: Record<string, any>, type: "edit" | "delete",) => {
         add("trackedEntity", e?.row?.trackedEntity);
@@ -55,9 +56,9 @@ export default function EnrollmentsPage() {
 
     useEffect(() => {
         if (school) {
-            void getData({ page: 1, pageSize: 10, program: programData.id as string, orgUnit: school, baseProgramStage: dataStoreData?.registration?.programStage as string, attributeFilters: filterState.attributes, dataElementFilters: [filterState.dataElements] })
+            void getData({ page: pagination.page, pageSize: pagination.pageSize, program: programData.id as string, orgUnit: school, baseProgramStage: dataStoreData?.registration?.programStage as string, attributeFilters: filterState.attributes, dataElementFilters: [filterState.dataElements] })
         }
-    }, [filterState, refetch, school])
+    }, [sectionType, filterState, refetch, school, pagination.page, pagination.pageSize])
 
     useEffect(() => {
         const filters = [
@@ -92,7 +93,6 @@ export default function EnrollmentsPage() {
                             title="Staff Re-enroll"
                             viewPortWidth={viewPortWidth}
                             columns={columns}
-                            totalElements={4}
                             tableData={tableData}
                             selectable={true}
                             selected={selected}
@@ -103,6 +103,8 @@ export default function EnrollmentsPage() {
                             loading={loading}
                             rightElements={<EnrollmentActionsButtons filetrState={filterState} selectedDataStoreKey={dataStoreData} programData={programData as unknown as ProgramConfig} />}
                             setFilterState={setFilterState}
+                            pagination={pagination}
+                            setPagination={setPagination}
                         />
                         {openEditModal && <ModalManager open={openEditModal} setOpen={setOpenEditModal} saveMode="UPDATE" />}
                         {(openSummary.created != null && openSummary.conflicts != null) && <SummaryModalContent conflictDetails={openSummary.conflictDetails} handleCloseModal={() => SetOpenSummary({ created: null, conflicts: null, conflictDetails: null })} created={openSummary.created} conflicts={openSummary.conflicts} open={openSummary.created != null && openSummary.conflicts != null} />}
