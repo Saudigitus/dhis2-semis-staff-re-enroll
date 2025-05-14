@@ -12,6 +12,7 @@ const SummaryModalContent = ({ created, conflicts, open, handleCloseModal, confl
     const dataStoreData = useDataStoreKey({ sectionType: "staff" });
     const programsValues = useProgramsKeys();
     const programData = programsValues[1]
+    const [pagination, setPagination] = useState({ page: 1, pageSize: 10, totalPages: 10 })
     const { columns } = useHeader({ dataStoreData, programConfigData: programData as unknown as ProgramConfig, tableColumns: [], module: Modules.Enrollment });
 
     const [showDetails, setShowDetails] = useState(false)
@@ -46,11 +47,10 @@ const SummaryModalContent = ({ created, conflicts, open, handleCloseModal, confl
                                     programConfig={programData}
                                     title="Non promoted staffs"
                                     columns={columns}
-                                    page={1}
-                                    totalElements={4}
+                                    pagination={pagination}
+                                    setPagination={setPagination}
                                     tableData={conflictDetails}
                                     sortable={false}
-                                // loading={loading}
                                 />
                             </div>
                         </Collapse>

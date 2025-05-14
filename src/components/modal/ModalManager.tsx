@@ -2,13 +2,12 @@ import { format } from "date-fns";
 import { useRecoilState } from "recoil";
 import ModalContent from "./ModalContent";
 import React, { useEffect, useState } from "react";
-import { TableDataRefetch, Modules } from "dhis2-semis-types"
+import { Modules } from "dhis2-semis-types"
 import { ModalManagerInterface } from "src/types/modal/ModalProps";
-import { enrollmentPostBody, enrollmentUpdateBody } from "../../utils/enrollment";
 import { formFields } from "../../utils/constants/form/enrollmentForm";
 import useGetEnrollmentUpdateInitialValues from "../../hooks/form/useGetEnrollmentUpdateInitialValues";
-import { ModalComponent, useDataStoreKey, useProgramsKeys, useGetUsedProgramStages, } from "dhis2-semis-components";
-import { useBuildForm, useGetAttributes, useGetPatternCode, useSaveTei, useUrlParams, useGetSectionTypeLabel } from "dhis2-semis-functions";
+import { ModalComponent, useDataStoreKey, useProgramsKeys, } from "dhis2-semis-components";
+import { useBuildForm, useGetAttributes, useGetPatternCode, useUrlParams, useGetSectionTypeLabel } from "dhis2-semis-functions";
 import { NoticeBox } from "@dhis2/ui";
 import { RowSelectionState } from "../../schemas/selectedStaffsSchema";
 import { useReenrollStaff } from "../../hooks/tei/useReenrollStaff";
@@ -19,21 +18,17 @@ function ModalManager(props: ModalManagerInterface) {
     const programData = programsValues[1];
     const { urlParameters, useQuery } = useUrlParams();
     const { school, schoolName } = urlParameters();
-    const { saveTei, loading: saving } = useSaveTei();
     const { sectionName } = useGetSectionTypeLabel();
     const [values, setValues] = useState<object>({ school, "enrollment_date": format(new Date(), "YYY-MM-dd") })
     const enrollment = useQuery().get("enrollment") as string
     const { attributes = [] } = useGetAttributes({ programData });
-    const [refetch, setRefetch] = useRecoilState(TableDataRefetch);
     const trackedEntity = useQuery().get("trackedEntity") as string
     const dataStoreData = useDataStoreKey({ sectionType: "staff" });
-    const programStagesToSave = useGetUsedProgramStages({ sectionType: "staff" });
-    const { reenrollStaff,loadingReenroll } = useReenrollStaff()
+    const { reenrollStaff, loadingReenroll } = useReenrollStaff()
     const { returnPattern, loadingCodes, generatedVariables } = useGetPatternCode();
     const { formData } = useBuildForm({ dataStoreData, programData, module: Modules.Enrollment });
     const [initialValues] = useState<object>({ registerschoolstaticform: schoolName, enrollment_date: format(new Date(), "yyyy-MM-dd") });
-    const { getInitialValues, initialValues: updateInitialValues, loading: initialValuesLoading, enrollmentEvents } = useGetEnrollmentUpdateInitialValues()
-
+    const { getInitialValues, initialValues: updateInitialValues, loading: initialValuesLoading } = useGetEnrollmentUpdateInitialValues()
     const [selected, setSelected] = useRecoilState(RowSelectionState)
 
     const clearSelected = () => {
@@ -53,7 +48,7 @@ function ModalManager(props: ModalManagerInterface) {
     }
 
     function onSubmit(e: Record<string, any>): void {
-        void reenrollStaff({ staffs: selected, formValues: values, clearSelectedStaffs: clearSelected,closeModal:handleCloseModal })
+        void reenrollStaff({ staffs: selected, formValues: values, clearSelectedStaffs: clearSelected, closeModal: handleCloseModal })
     }
 
     return (
