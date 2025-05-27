@@ -2,18 +2,17 @@ import { useRecoilState } from 'recoil';
 import { ProgramConfig } from 'dhis2-semis-types'
 import React, { useEffect, useState } from "react";
 import { TableDataRefetch, Modules } from "dhis2-semis-types"
-import { InfoPage, useDataStoreKey } from 'dhis2-semis-components'
-import { Table, useProgramsKeys } from "dhis2-semis-components";
+import { InfoPage } from 'dhis2-semis-components'
+import { Table } from "dhis2-semis-components";
 import EnrollmentActionsButtons from "../../components/enrollmentButtons/EnrollmentActionsButtons";
 import { useHeader, useTableData, useUrlParams, useViewPortWidth } from "dhis2-semis-functions";
 import { RowSelectionState } from '../../schemas/selectedStaffsSchema';
 import SummaryModalContent from '../../components/modal/SummaryModalContent';
 import { ReenrollSummaryState } from '../../schemas/summarySchema';
+import useGetSelectedKeys from 'src/hooks/config/useGetSelectedKeys';
 
 export default function Reenrollment() {
-    const dataStoreData = useDataStoreKey({ sectionType: "staff" });
-    const programsValues = useProgramsKeys();
-    const programData = programsValues[1]
+    const { dataStoreData, program: programData } = useGetSelectedKeys()
     const [selected, setSelected] = useRecoilState(RowSelectionState)
     const { viewPortWidth } = useViewPortWidth()
     const { urlParameters } = useUrlParams()
@@ -27,7 +26,7 @@ export default function Reenrollment() {
 
     useEffect(() => {
         if (school) {
-            void getData({ page: pagination.page, pageSize: pagination.pageSize, program: programData.id as string, orgUnit: school, baseProgramStage: dataStoreData?.registration?.programStage as string, attributeFilters: filterState.attributes, dataElementFilters: [filterState.dataElements] })
+            void getData({ page: pagination.page, pageSize: pagination.pageSize, program: programData?.id as string, orgUnit: school, baseProgramStage: dataStoreData?.registration?.programStage as string, attributeFilters: filterState.attributes, dataElementFilters: [filterState.dataElements] })
         }
     }, [sectionType, filterState, refetch, school, pagination.page, pagination.pageSize])
 
@@ -60,7 +59,7 @@ export default function Reenrollment() {
                     :
                     <>
                         <Table
-                            programConfig={programData}
+                            programConfig={programData!}
                             title="Staff Re-enroll"
                             viewPortWidth={viewPortWidth}
                             columns={columns}
