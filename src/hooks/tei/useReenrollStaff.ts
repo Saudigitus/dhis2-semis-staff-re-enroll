@@ -1,21 +1,19 @@
 import { format } from "date-fns"
-import { useDataStoreKey, useProgramsKeys } from "dhis2-semis-components"
 import { useGetEvents, useShowAlerts, useUploadEvents, useUrlParams } from "dhis2-semis-functions"
 import { TableDataRefetch } from "dhis2-semis-types"
 import { useState } from "react"
 import { useRecoilState, useSetRecoilState } from "recoil"
 import { ReenrollSummaryState } from "../../schemas/summarySchema"
+import useGetSelectedKeys from "../config/useGetSelectedKeys"
 
 const useReenrollStaff = () => {
     const { getEvents } = useGetEvents()
-    const dataStoreData = useDataStoreKey({ sectionType: "staff" });
+    const { program: programData, dataStoreData } = useGetSelectedKeys()
     const [loadingReenroll, setLoadingReenroll] = useState<boolean>(false)
-    const programsValues = useProgramsKeys();
     const { urlParameters } = useUrlParams();
     const { school: orgUnit } = urlParameters();
     const { uploadValues } = useUploadEvents()
     const setRefetch = useSetRecoilState(TableDataRefetch);
-    const programData = programsValues[1];
     const { show } = useShowAlerts()
     const [openSummary, SetOpenSummary] = useRecoilState(ReenrollSummaryState);
 
@@ -43,7 +41,7 @@ const useReenrollStaff = () => {
         })
 
         const getEventStructure = (stage: string, datavalues: any[]) => {
-            return { occurredAt, notes: [], status: "ACTIVE", program: programData.id, programStage: stage, orgUnit, scheduledAt: occurredAt, dataValues: datavalues }
+            return { occurredAt, notes: [], status: "ACTIVE", program: programData?.id, programStage: stage, orgUnit, scheduledAt: occurredAt, dataValues: datavalues }
         }
 
         const staffsUnableToSave: any[] = []
@@ -86,7 +84,7 @@ const useReenrollStaff = () => {
                             {
                                 occurredAt,
                                 enrolledAt: enrollmentDate,
-                                program: programData.id,
+                                program: programData?.id,
                                 orgUnit,
                                 status: "COMPLETED",
                                 events: events

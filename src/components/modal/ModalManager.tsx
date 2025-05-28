@@ -3,27 +3,26 @@ import { useRecoilState } from "recoil";
 import ModalContent from "./ModalContent";
 import React, { useEffect, useState } from "react";
 import { Modules } from "dhis2-semis-types"
-import { ModalManagerInterface } from "src/types/modal/ModalProps";
+import { ModalManagerInterface } from "../../types/modal/ModalProps";
 import { formFields } from "../../utils/constants/form/enrollmentForm";
 import useGetEnrollmentUpdateInitialValues from "../../hooks/form/useGetEnrollmentUpdateInitialValues";
-import { ModalComponent, useDataStoreKey, useProgramsKeys, } from "dhis2-semis-components";
+import { ModalComponent } from "dhis2-semis-components";
 import { useBuildForm, useGetAttributes, useGetPatternCode, useUrlParams, useGetSectionTypeLabel } from "dhis2-semis-functions";
 import { NoticeBox } from "@dhis2/ui";
 import { RowSelectionState } from "../../schemas/selectedStaffsSchema";
 import { useReenrollStaff } from "../../hooks/tei/useReenrollStaff";
+import useGetSelectedKeys from "../../hooks/config/useGetSelectedKeys";
 
 function ModalManager(props: ModalManagerInterface) {
     const { open, setOpen, saveMode } = props;
-    const programsValues = useProgramsKeys();
-    const programData = programsValues[1];
     const { urlParameters, useQuery } = useUrlParams();
     const { school, schoolName } = urlParameters();
     const { sectionName } = useGetSectionTypeLabel();
+    const { program: programData, dataStoreData } = useGetSelectedKeys()
     const [values, setValues] = useState<object>({ school, "enrollment_date": format(new Date(), "YYY-MM-dd") })
     const enrollment = useQuery().get("enrollment") as string
-    const { attributes = [] } = useGetAttributes({ programData });
+    const { attributes = [] } = useGetAttributes({ programData: programData! });
     const trackedEntity = useQuery().get("trackedEntity") as string
-    const dataStoreData = useDataStoreKey({ sectionType: "staff" });
     const { reenrollStaff, loadingReenroll } = useReenrollStaff()
     const { returnPattern, loadingCodes, generatedVariables } = useGetPatternCode();
     const { formData } = useBuildForm({ dataStoreData, programData, module: Modules.Enrollment });

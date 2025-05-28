@@ -6,12 +6,11 @@ import { useState } from "react";
 import { Collapse } from "@material-ui/core";
 import { useHeader } from "dhis2-semis-functions";
 import { Modules, ProgramConfig } from "dhis2-semis-types";
+import useGetSelectedKeys from "../../hooks/config/useGetSelectedKeys";
 
 const SummaryModalContent = ({ created, conflicts, open, handleCloseModal, conflictDetails }
     : { created: number, conflicts: number, open: boolean, handleCloseModal: () => void, conflictDetails: any }) => {
-    const dataStoreData = useDataStoreKey({ sectionType: "staff" });
-    const programsValues = useProgramsKeys();
-    const programData = programsValues[1]
+    const { dataStoreData, program: programData } = useGetSelectedKeys()
     const [pagination, setPagination] = useState({ page: 1, pageSize: 10, totalPages: 10 })
     const { columns } = useHeader({ dataStoreData, programConfigData: programData as unknown as ProgramConfig, tableColumns: [], module: Modules.Enrollment });
 
@@ -44,7 +43,7 @@ const SummaryModalContent = ({ created, conflicts, open, handleCloseModal, confl
                         <Collapse in={showDetails}>
                             <div className={styles.detailsContainer}>
                                 <Table
-                                    programConfig={programData}
+                                    programConfig={programData!}
                                     title="Non promoted staffs"
                                     columns={columns}
                                     pagination={pagination}

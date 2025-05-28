@@ -9,7 +9,7 @@ import { useHeader, useTableData, useUrlParams, useViewPortWidth } from "dhis2-s
 import { RowSelectionState } from '../../schemas/selectedStaffsSchema';
 import SummaryModalContent from '../../components/modal/SummaryModalContent';
 import { ReenrollSummaryState } from '../../schemas/summarySchema';
-import useGetSelectedKeys from 'src/hooks/config/useGetSelectedKeys';
+import useGetSelectedKeys from '../../hooks/config/useGetSelectedKeys';
 
 export default function Reenrollment() {
     const { dataStoreData, program: programData } = useGetSelectedKeys()
