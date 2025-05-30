@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
 import { IconAddCircle24, Button, ButtonStrip } from "@dhis2/ui";
-import Tooltip from '@material-ui/core/Tooltip';
 import styles from './enrollmentActionsButtons.module.css'
 import { useGetSectionTypeLabel, useUrlParams } from 'dhis2-semis-functions';
 import ModalManager from '../modal/ModalManager';
 import { RowSelectionState } from '../../schemas/selectedStaffsSchema';
 import { useRecoilState } from 'recoil';
+import { Tooltip } from '@mui/material';
 
 function EnrollmentActionsButtons() {
     const { urlParameters } = useUrlParams();

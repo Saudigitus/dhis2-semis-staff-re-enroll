@@ -17,12 +17,12 @@ export default function Reenrollment() {
     const { viewPortWidth } = useViewPortWidth()
     const { urlParameters } = useUrlParams()
     const { academicYear, grade, class: section, school, schoolName, sectionType } = urlParameters()
-    const { getData, tableData, loading } = useTableData({ module: Modules.Enrollment, selectedDataStore: dataStoreData });
-    const { columns } = useHeader({ dataStoreData, programConfigData: programData as unknown as ProgramConfig, tableColumns: [], module: Modules.Enrollment });
+    const { getData, tableData, loading } = useTableData({ module: Modules.Enrollment });
+    const { columns } = useHeader({ dataStoreData, programConfigData: programData as unknown as ProgramConfig, tableColumns: [], programStage: "" });
     const [filterState, setFilterState] = useState<{ dataElements: any, attributes: any }>({ attributes: [], dataElements: [] });
     const [refetch,] = useRecoilState(TableDataRefetch);
     const [openSummary, SetOpenSummary] = useRecoilState(ReenrollSummaryState);
-    const [pagination, setPagination] = useState({ page: 1, pageSize: 10, totalPages: 10 })
+    const [pagination, setPagination] = useState({ page: 1, pageSize: 10, totalPages: 0, totalElements: 0 });
 
     useEffect(() => {
         if (school) {
@@ -63,7 +63,7 @@ export default function Reenrollment() {
                             title="Staff Re-enroll"
                             viewPortWidth={viewPortWidth}
                             columns={columns}
-                            tableData={tableData}
+                            tableData={tableData.data}
                             selectable={true}
                             selected={selected}
                             setSelected={setSelected}
