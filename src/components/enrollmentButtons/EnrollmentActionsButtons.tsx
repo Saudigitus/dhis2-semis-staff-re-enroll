@@ -14,7 +14,6 @@ function EnrollmentActionsButtons() {
     const [openSaveModal, setOpenSaveModal] = useState<boolean>(false)
     const [selected, _] = useRecoilState(RowSelectionState)
 
-
     return (
         <div className={styles.container}>
             <ButtonStrip className={styles.work_buttons}>
@@ -23,7 +22,7 @@ function EnrollmentActionsButtons() {
                 >
                     <span>
                         <Button disabled={selected?.length == 0} icon={<IconAddCircle24 />}>
-                            <span className={styles.work_buttons_text}>Perform staff {sectionName.toLocaleLowerCase()} re-enroll</span>
+                            <span className={styles.work_buttons_text}>Perform {sectionName.toLocaleLowerCase()} re-enroll</span>
                         </Button>
                     </span>
                 </Tooltip>
