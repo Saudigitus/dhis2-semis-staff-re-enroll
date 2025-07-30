@@ -12,7 +12,7 @@ const SummaryModalContent = ({ created, conflicts, open, handleCloseModal, confl
     : { created: number, conflicts: number, open: boolean, handleCloseModal: () => void, conflictDetails: any }) => {
     const { dataStoreData, program: programData } = useGetSelectedKeys()
     const [pagination, setPagination] = useState({ page: 1, pageSize: 10, totalPages: 0, totalElements: 0 });
-    const { columns } = useHeader({ dataStoreData, programConfigData: programData as unknown as ProgramConfig, tableColumns: [], programStage: "" });
+    const { columns } = useHeader({ dataStoreData, programConfigData: programData as unknown as ProgramConfig, programStage: "" });
 
     const [showDetails, setShowDetails] = useState(false)
 

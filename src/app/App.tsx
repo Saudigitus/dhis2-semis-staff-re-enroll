@@ -4,7 +4,7 @@ import { Router } from '../components/routes'
 
 const Reenrollment = () => {
 
-    return (z
+    return (
         <Router />
     )
 }
