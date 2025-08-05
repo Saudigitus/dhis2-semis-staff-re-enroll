@@ -2,7 +2,7 @@ import { useRecoilState } from 'recoil';
 import { ProgramConfig } from 'dhis2-semis-types'
 import React, { useEffect, useState } from "react";
 import { TableDataRefetch, Modules } from "dhis2-semis-types"
-import { InfoPage } from 'dhis2-semis-components'
+import { InfoPage, useSchoolCalendar } from 'dhis2-semis-components'
 import { Table } from "dhis2-semis-components";
 import EnrollmentActionsButtons from "../../components/enrollmentButtons/EnrollmentActionsButtons";
 import { useHeader, useTableData, useUrlParams, useViewPortWidth } from "dhis2-semis-functions";
@@ -15,6 +15,7 @@ export default function Reenrollment() {
     const { dataStoreData, program: programData } = useGetSelectedKeys()
     const [selected, setSelected] = useRecoilState(RowSelectionState)
     const { viewPortWidth } = useViewPortWidth()
+    const { academicYear: academicYearId } = useSchoolCalendar()
     const { urlParameters } = useUrlParams()
     const { academicYear, grade, class: section, school, schoolName, sectionType } = urlParameters()
     const { getData, tableData, loading } = useTableData({ module: Modules.Enrollment });
@@ -32,7 +33,7 @@ export default function Reenrollment() {
 
     useEffect(() => {
         const filters = [
-            academicYear !== null ? `${dataStoreData.registration.academicYear}:in:${academicYear}` : null,
+            academicYear !== null ? `${academicYearId}:in:${academicYear}` : null,
             grade !== null ? `${dataStoreData.registration.grade}:in:${grade}` : null,
             section !== null ? `${dataStoreData.registration.section}:in:${section}` : null,
         ].filter(Boolean); // Remove valores nulos
