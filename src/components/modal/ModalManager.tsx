@@ -20,9 +20,9 @@ function ModalManager(props: ModalManagerInterface) {
     const { sectionName } = useGetSectionTypeLabel();
     const { program: programData, dataStoreData } = useGetSelectedKeys()
     const [values, setValues] = useState<object>({ school, "enrollment_date": format(new Date(), "YYY-MM-dd") })
-    const enrollment = useQuery().get("enrollment") as string
+    const enrollment = useQuery.get("enrollment") as string
     const { attributes = [] } = useGetAttributes({ programData: programData! });
-    const trackedEntity = useQuery().get("trackedEntity") as string
+    const trackedEntity = useQuery.get("trackedEntity") as string
     const { reenrollStaff, loadingReenroll } = useReenrollStaff()
     const { returnPattern, loadingCodes, generatedVariables } = useGetPatternCode();
     const { formData } = useBuildForm({ dataStoreData, programData, module: Modules.Enrollment });

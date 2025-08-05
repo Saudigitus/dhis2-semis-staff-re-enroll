@@ -19,7 +19,7 @@ export default function Reenrollment() {
     const { urlParameters } = useUrlParams()
     const { academicYear, grade, class: section, school, schoolName, sectionType } = urlParameters()
     const { getData, tableData, loading } = useTableData({ module: Modules.Enrollment });
-    const { columns } = useHeader({ dataStoreData, programConfigData: programData as unknown as ProgramConfig, tableColumns: [], programStage: "" });
+    const { columns } = useHeader({ dataStoreData, programConfigData: programData as unknown as ProgramConfig, programStage: "" });
     const [filterState, setFilterState] = useState<{ dataElements: any, attributes: any }>({ attributes: [], dataElements: [] });
     const [refetch,] = useRecoilState(TableDataRefetch);
     const [openSummary, SetOpenSummary] = useRecoilState(ReenrollSummaryState);
