@@ -17,7 +17,7 @@ export default function Reenrollment() {
     const { viewPortWidth } = useViewPortWidth()
     const { academicYear: academicYearId } = useSchoolCalendarKey()
     const { urlParameters } = useUrlParams()
-    const { academicYear, grade, class: section, school, schoolName, sectionType } = urlParameters()
+    const { academicYear, grade, class: section, school, schoolName, sectionType } = urlParameters
     const { getData, tableData, loading } = useTableData({ module: Modules.Enrollment });
     const { columns } = useHeader({ dataStoreData, programConfigData: programData as unknown as ProgramConfig, programStage: "" });
     const [filterState, setFilterState] = useState<{ dataElements: any, attributes: any }>({ attributes: [], dataElements: [] });

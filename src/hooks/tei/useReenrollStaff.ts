@@ -11,7 +11,7 @@ const useReenrollStaff = () => {
     const { program: programData, dataStoreData } = useGetSelectedKeys()
     const [loadingReenroll, setLoadingReenroll] = useState<boolean>(false)
     const { urlParameters } = useUrlParams();
-    const { school: orgUnit } = urlParameters();
+    const { school: orgUnit } = urlParameters;
     const { uploadValues } = useUploadEvents()
     const setRefetch = useSetRecoilState(TableDataRefetch);
     const { show } = useShowAlerts()
