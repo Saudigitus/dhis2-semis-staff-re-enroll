@@ -9,7 +9,7 @@ import { Tooltip } from '@mui/material';
 
 function EnrollmentActionsButtons() {
     const { urlParameters } = useUrlParams();
-    const { school: orgUnit } = urlParameters();
+    const { school: orgUnit } = urlParameters;
     const { sectionName } = useGetSectionTypeLabel();
     const [openSaveModal, setOpenSaveModal] = useState<boolean>(false)
     const [selected, _] = useRecoilState(RowSelectionState)

@@ -16,7 +16,7 @@ import useGetSelectedKeys from "../../hooks/config/useGetSelectedKeys";
 function ModalManager(props: ModalManagerInterface) {
     const { open, setOpen, saveMode } = props;
     const { urlParameters, useQuery } = useUrlParams();
-    const { school, schoolName } = urlParameters();
+    const { school, schoolName } = urlParameters;
     const { sectionName } = useGetSectionTypeLabel();
     const { program: programData, dataStoreData } = useGetSelectedKeys()
     const [values, setValues] = useState<object>({ school, "enrollment_date": format(new Date(), "YYY-MM-dd") })
