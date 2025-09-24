@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { format } from 'date-fns';
 import { useDataStoreKey } from 'dhis2-semis-components';
-import { useGetSectionTypeLabel, useUrlParams, useGetEvents, useGetTei, attributes, dataValues } from 'dhis2-semis-functions';
+import { useGetSectionTypeLabel, useUrlParams, useGetEvents, useGetTeis, attributes, dataValues } from 'dhis2-semis-functions';
 
 function useGetEnrollmentUpdateInitialValues() {
-    const { getTei } = useGetTei()
+    const { getTeis } = useGetTeis()
     const { getEvents } = useGetEvents()
     const { urlParameters } = useUrlParams()
     const { sectionName } = useGetSectionTypeLabel();
@@ -20,7 +20,7 @@ function useGetEnrollmentUpdateInitialValues() {
         setLoading(true)
 
         if (Object.keys(dataStoreData)?.length) {
-            getTei(programId, [trackedEntity])
+            getTeis({program: programId, trackedEntity: [trackedEntity]})
                 .then(async (trackedEntityInstance: any) => {
                     let socioEconomicData: any = {}
 
@@ -34,7 +34,7 @@ function useGetEnrollmentUpdateInitialValues() {
                         program: programId,
                         enrollment: enrollment,
                         trackedEntity: trackedEntity,
-                        ...attributes(trackedEntityInstance?.results?.instances[0]?.attributes ?? []),
+                        ...attributes(trackedEntityInstance?.[0]?.attributes ?? []),
                         orgUnit: registrationData?.find((x: any) => x.enrollment === enrollment)?.orgUnit,
                         enrollmentDate: registrationData?.find((x: any) => x.enrollment === enrollment)?.occurredAt,
                         ...dataValues(registrationData?.find((x: any) => x.enrollment === enrollment)?.dataValues ?? []),
